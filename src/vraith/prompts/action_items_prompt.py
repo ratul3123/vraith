@@ -2,7 +2,7 @@ from langchain_core.prompts import ChatPromptTemplate
 
 action_items_prompt = ChatPromptTemplate.from_messages([
         ("system", 
-            "You are an expert meeting analyst. From the meeting transcript, "
+            "You are an expert audio/video analyst. From the audio/video transcript, "
             "extract all action items. For each provide:\n"
             "- Task description\n"
             "- Owner (who is responsible)\n"
