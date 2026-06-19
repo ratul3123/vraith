@@ -1,7 +1,7 @@
 import os
 import requests
 from pydub import AudioSegment
-from vraith.config.model import SARVAM_STT_MODEL
+from vraith.config.settings import SARVAM_STT_MODEL
 from vraith.config.settings import SARVAM_API_KEY, SARVAM_STT_TRANSLATE_URL
 
 SARVAM_PIECE_SECONDS = 25  # Sarvam's API rejects audio longer than 30s.

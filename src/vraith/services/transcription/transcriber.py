@@ -1,5 +1,5 @@
 import whisper
-from vraith.config.model import WHISPER_MODEL
+from vraith.config.settings import WHISPER_MODEL
 from vraith.services.transcription.translator import translate_with_sarvam
 
 _model = None
