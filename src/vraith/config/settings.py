@@ -13,6 +13,9 @@ SARVAM_STT_TRANSLATE_URL = "https://api.sarvam.ai/speech-to-text-translate"
 MODEL_NAME = "mistral-small-latest"
 MODEL_TEMPERATURE = 0.3
 
+EMBEDDING_MODEL = "all-MiniLM-L6-v2"
+COLLECTION_NAME = "audio_video_transcript"
+
 if not MISTRAL_API_KEY:
     raise ValueError("MISTRAL_API_KEY is not set in the environment variables.")
 
