@@ -1,17 +1,29 @@
 from pydub import AudioSegment
 import yt_dlp
 import os
+import tempfile
+import streamlit as st
 
 DOWNLOAD_DIR = "data/downloads"
 os.makedirs(DOWNLOAD_DIR, exist_ok=True)
 
+cookies_path = None
+
+try:
+    if "COOKIES" in st.secrets:
+        cookies_path = "/tmp/cookies.txt"
+        with open(cookies_path, "w") as f:
+            f.write(st.secrets["COOKIES"])
+except st.errors.StreamlitSecretNotFoundError:
+    print("Warning: No Streamlit secrets found. Running yt-dlp anonymously.")
+
 def download_youtube_audio(url: str) -> str:
-    output_path = os.path.join(DOWNLOAD_DIR, "%(title)s.%(ext)s")
+    output_path = os.path.join(DOWNLOAD_DIR, "%(id)s.%(ext)s")
     ydl_opts = {
         "format": "bestaudio/best",
         "noplaylist": True,
         "quiet": True,
-        "extract_flat": False,
+        "nocheckcertificate": True,
         "http_headers": {
             "User-Agent": (
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -19,13 +31,7 @@ def download_youtube_audio(url: str) -> str:
                 "(KHTML, like Gecko) "
                 "Chrome/126.0.0.0 Safari/537.36"
             )
-        },
-        "nocheckcertificate": True,
-        "extractor_args": {
-            "youtube": {
-                "player_client": ["android", "web"]
-            }
-        },
+        }, 
         "postprocessors": [
             {
                 "key": "FFmpegExtractAudio",
@@ -35,6 +41,10 @@ def download_youtube_audio(url: str) -> str:
         ],
         "outtmpl": output_path,
     }
+    
+    if cookies_path:
+        ydl_opts["cookiefile"] = cookies_path
+    
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(url, download=True)
         base = os.path.splitext(ydl.prepare_filename(info))[0]
