@@ -23,6 +23,7 @@ mistralai>=0.4.0                  # Official Mistral Python client
 chromadb>=0.5.0                   # Local vector store
 langchain-chroma>=1.1.0 
 sentence-transformers>=3.0.0      # HuggingFace embedding models
+sentencepiece>=0.2.1
 langchain-huggingface>=0.0.3      # LangChain ↔ HuggingFace embeddings bridge
 huggingface-hub>=0.23.0           # Model downloading from HuggingFace Hub
 tiktoken>=0.7.0                   # Token counting for text splitting
