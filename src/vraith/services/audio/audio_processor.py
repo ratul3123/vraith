@@ -9,7 +9,17 @@ def download_youtube_audio(url: str) -> str:
     output_path = os.path.join(DOWNLOAD_DIR, "%(title)s.%(ext)s")
     ydl_opts = {
         "format": "bestaudio/best",
-        "outtmpl": output_path,
+        "noplaylist": True,
+        "quiet": True,
+        "extract_flat": False,
+        "http_headers": {
+            "User-Agent": (
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                "AppleWebKit/537.36 "
+                "(KHTML, like Gecko) "
+                "Chrome/126.0.0.0 Safari/537.36"
+            )
+        },
         "postprocessors": [
             {
                 "key": "FFmpegExtractAudio",
@@ -17,7 +27,7 @@ def download_youtube_audio(url: str) -> str:
                 "preferredquality": "192",
             }
         ],
-        "quiet": True,
+        "outtmpl": output_path,
     }
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(url, download=True)
