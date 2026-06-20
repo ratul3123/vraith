@@ -303,6 +303,22 @@ label { color: var(--text-muted) !important; font-size: 0.8rem !important; }
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+/* ── Hide form helper caption text ── */
+/* 1. Target the dedicated form small helper caption container */
+div[data-testid="stForm"] small {
+    display: none !important;
+}
+
+/* 2. Target standard input element helper message spaces */
+div[data-testid="InputInstructions"] {
+    display: none !important;
+}
+
+/* 3. Catch fallback helper paragraphs next to the submit button */
+.stFormSubmitButton + div p {
+    display: none !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -340,12 +356,13 @@ with st.sidebar:
     st.markdown('<div class="hero-sub">Analyse with Intelligence</div>', unsafe_allow_html=True)
     st.markdown("---")
 
-    st.markdown('<span class="badge badge-purple">Configuration</span>', unsafe_allow_html=True)
-    source_url = st.text_input("YouTube URL or File Path", placeholder="YouTube Link / Local File ...", key="media_source_input")
-    uploaded_file = st.file_uploader("Or Upload Video / Audio File Directly", type=["mp4", "mkv", "avi", "mp3", "wav", "m4a"])
-    
-    language = st.selectbox("Language", ["english", "banglish"], index=0, key="language_select")
-    run_btn = st.button("⚡ Analyse", use_container_width=True, key="trigger_analysis_btn")
+    with st.form(key="pipeline_input_form"):
+        st.markdown('<span class="badge badge-purple">Configuration</span>', unsafe_allow_html=True)
+        source_url = st.text_input("YouTube URL or File Path", placeholder="YouTube Link / Local File ...", key="media_source_input")
+        uploaded_file = st.file_uploader("Or Upload Video / Audio File Directly", type=["mp4", "mkv", "avi", "mp3", "wav", "m4a"])
+        
+        language = st.selectbox("Language", ["english", "banglish"], index=0, key="language_select")
+        run_btn = st.form_submit_button("⚡ Analyse", use_container_width=True, key="trigger_analysis_btn")
         
     source = None
 
@@ -536,11 +553,12 @@ if st.session_state.result:
         </div>""", unsafe_allow_html=True)
 
     # Chat input
-    chat_col1, chat_col2 = st.columns([5, 1], gap="small")
-    with chat_col1:
-        user_input = st.text_input("Your question", placeholder="What were the main decisions made?", label_visibility="collapsed", key="chat_user_query_input")
-    with chat_col2:
-        send_btn = st.button("Send →", use_container_width=True)
+    with st.form(key="chat_interaction_form", clear_on_submit=True):
+        chat_col1, chat_col2 = st.columns([5, 1], gap="small")
+        with chat_col1:
+            user_input = st.text_input("Your question", placeholder="What were the main decisions made?", label_visibility="collapsed", key="chat_user_query_input")
+        with chat_col2:
+            send_btn = st.form_submit_button("Send →", use_container_width=True)
 
     if send_btn and user_input.strip():
         with st.spinner("Thinking…"):
