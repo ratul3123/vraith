@@ -1,3 +1,4 @@
+import os
 import streamlit as st
 import time
 from dotenv import load_dotenv
@@ -340,11 +341,29 @@ with st.sidebar:
     st.markdown("---")
 
     st.markdown('<span class="badge badge-purple">Configuration</span>', unsafe_allow_html=True)
-    source = st.text_input("YouTube URL or File Path", placeholder="YouTube Link / Local File ...", key="media_source_input")
-
+    source_url = st.text_input("YouTube URL or File Path", placeholder="YouTube Link / Local File ...", key="media_source_input")
+    uploaded_file = st.file_uploader("Or Upload Video / Audio File Directly", type=["mp4", "mkv", "avi", "mp3", "wav", "m4a"])
+    
     language = st.selectbox("Language", ["english", "banglish"], index=0, key="language_select")
-
     run_btn = st.button("⚡ Analyse", use_container_width=True, key="trigger_analysis_btn")
+        
+    source = None
+
+    if uploaded_file is not None:
+        os.makedirs("data/uploads", exist_ok=True)
+
+        temp_path = os.path.join(
+            "data/uploads",
+            uploaded_file.name
+        )
+
+        with open(temp_path, "wb") as f:
+            f.write(uploaded_file.getbuffer())
+
+        source = temp_path
+
+    elif source_url and source_url.strip():
+        source = source_url.strip()
 
     # Fixed execution display path state persistence block
     if st.session_state.pipeline_done or st.session_state.processing:
@@ -367,8 +386,8 @@ st.markdown("---")
 
 # ── Run Pipeline ────────────────────────────────────────────────────────────────
 if run_btn:
-    if not source.strip():
-        st.error("Please enter a YouTube URL or file path.")
+    if not source:
+        st.error("Please provide a YouTube URL, local file path, or upload a file.")
     else:
         st.session_state.pipeline_done = False
         st.session_state.processing = True
@@ -521,7 +540,7 @@ if st.session_state.result:
     with chat_col1:
         user_input = st.text_input("Your question", placeholder="What were the main decisions made?", label_visibility="collapsed", key="chat_user_query_input")
     with chat_col2:
-        send_btn = st.button("Send →", use_container_width=True, key="send_chat_msg_btn")
+        send_btn = st.button("Send →", use_container_width=True)
 
     if send_btn and user_input.strip():
         with st.spinner("Thinking…"):
