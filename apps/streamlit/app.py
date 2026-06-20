@@ -304,6 +304,26 @@ label { color: var(--text-muted) !important; font-size: 0.8rem !important; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
+/* ── Footer ── */
+.notice {
+    margin-top: 4rem;
+    padding: 1rem 0;
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border);
+}
+
+.notice a {
+    color: var(--accent-glow);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.notice a:hover {
+    color: var(--accent-2);
+}
+
 /* ── Hide form helper caption text ── */
 /* 1. Target the dedicated form small helper caption container */
 div[data-testid="stForm"] small {
@@ -349,6 +369,16 @@ def render_step_bar(label: str, key: str, icon: str):
         <div class="status-dot {css}"></div>
         <span>{icon} {label}</span>
     </div>""", unsafe_allow_html=True)
+    
+def render_footer():
+    st.markdown("""
+    <div class="notice">
+        © 2026 Vraith · AI-Powered Media Intelligence · Built by
+        <a href="https://github.com/ratul3123" target="_blank">
+            Shahriar Ratul
+        </a>
+    </div>
+    """, unsafe_allow_html=True)
 
 # ─── Sidebar ────────────────────────────────────────────────────────────────────
 with st.sidebar:
@@ -589,3 +619,5 @@ else:
             <span class="badge badge-green">RAG Chat</span>
         </div>
     </div>""", unsafe_allow_html=True)
+    
+render_footer()
