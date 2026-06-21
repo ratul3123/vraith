@@ -32,7 +32,7 @@ https://workingonit.com
 - Action item extraction (with owners & deadlines)
 - Key decision detection
 - Open question identification
-- RAG-based chat over meeting content (ChromaDB + embeddings)
+- RAG-based chat over audio/video content (ChromaDB + embeddings)
 - Interactive Streamlit UI
 
 ## UI Preview
@@ -43,7 +43,12 @@ https://workingonit.com
 
 ### Generated Result
 
-![Result](docs/ui-result.png)
+![Result](docs/ui-result-1.png)
+![Result](docs/ui-result-2.png)
+
+### RAG-based Chat
+
+![Result](docs/ui-result-3.png)
 
 ## Why Vraith?
 
@@ -51,7 +56,7 @@ Most tools only **transcribe** or **translate**.
 
 Vraith as an intelligent media analysis assistant goes further:
 
-- Turns meetings into **structured intelligence**
+- Turns audio/video transcripts into **structured intelligence**
 - Enables **semantic search over conversations**
 - Lets you **ask questions like a human assistant**
 - Works with both **English + Bangla/Banglish**
