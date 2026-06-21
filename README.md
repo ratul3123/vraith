@@ -18,7 +18,7 @@ Vraith is an intelligent media analysis assistant powered by Advanced Neural Tra
 
 ## Live Demo
 
-https://workingonit.com
+https://vraith.streamlit.app/
 
 
 ## Features
